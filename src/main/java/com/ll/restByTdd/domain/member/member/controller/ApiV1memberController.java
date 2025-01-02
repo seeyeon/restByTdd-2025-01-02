@@ -13,7 +13,7 @@ public class ApiV1memberController {
 
     @PostMapping("/join")
     public RsData<Void> join(){
-        return new RsData<>("201-1","무명님 환영합니다.");
+        return new RsData<>("201-1","무명님 환영합니다. 회원가입이 완료되었습니다.");
     }
 
 }
