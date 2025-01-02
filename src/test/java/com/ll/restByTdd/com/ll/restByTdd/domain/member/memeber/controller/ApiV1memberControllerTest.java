@@ -1,6 +1,8 @@
 package com.ll.restByTdd.com.ll.restByTdd.domain.member.memeber.controller;
 
 import com.ll.restByTdd.domain.member.member.controller.ApiV1memberController;
+import com.ll.restByTdd.domain.member.member.entity.Member;
+import com.ll.restByTdd.domain.member.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest  // 스프링부트 테스트 클래스임을 나타냅니다.
 @ActiveProfiles("test")  // 테스트 환경에서는 test 프로파일을 활성화합니다.
 @AutoConfigureMockMvc // MockMvc를 자동으로 설정합니다.
 @Transactional  // 각 테스트 메서드가 종료되면 롤백됩니다.
 public class ApiV1memberControllerTest {
+
+    @Autowired
+    private MemberService memberService;
+    //test에서는 private final MemberService memberService; 사용X(@Autowired 사용해야함)
+
 
     @Autowired    // MockMvc를 주입
     private MockMvc mvc;
@@ -54,5 +60,8 @@ public class ApiV1memberControllerTest {
                 .andExpect(status().isCreated())  //201결과값을 기대한다
                 .andExpect(jsonPath("$.resultCode").value("201-1"))
                 .andExpect(jsonPath("$.msg").value("무명님 환영합니다. 회원가입이 완료되었습니다."));
+
+        Member member = memberService.findByUsername("usernew").get();
+        assertThat(member.getNickname()).isEqualTo("무명");
     }
 }
