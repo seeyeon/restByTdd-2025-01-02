@@ -14,18 +14,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@AutoConfigureMockMvc
-@Transactional  //테스환경에서는 기본적으로 rollback이 된다.(DB가 원상복구 된다)
+@SpringBootTest  // 스프링부트 테스트 클래스임을 나타냅니다.
+@ActiveProfiles("test")  // 테스트 환경에서는 test 프로파일을 활성화합니다.
+@AutoConfigureMockMvc // MockMvc를 자동으로 설정합니다.
+@Transactional  // 각 테스트 메서드가 종료되면 롤백됩니다.
 public class ApiV1memberControllerTest {
 
-    @Autowired
+    @Autowired    // MockMvc를 주입
     private MockMvc mvc;
 
     @Test
     @DisplayName("회원가입")
     void t1() throws Exception {
+        // 회원가입 요청을 보냅니다.
         ResultActions resultActions = mvc
                 .perform(
                         post("/api/v1/members/join")
