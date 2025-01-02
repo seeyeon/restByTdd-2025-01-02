@@ -1,5 +1,6 @@
 package com.ll.restByTdd.com.ll.restByTdd.domain.member.memeber.controller;
 
+import com.ll.restByTdd.domain.member.member.controller.ApiV1memberController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest  // 스프링부트 테스트 클래스임을 나타냅니다.
@@ -33,6 +35,8 @@ public class ApiV1memberControllerTest {
                 ).andDo(print());
 
         resultActions
+                .andExpect(handler().handlerType(ApiV1memberController.class))
+                .andExpect(handler().methodName("join"))
                 .andExpect(status().isCreated());  //201결과값을 기대한다
     }
 }
